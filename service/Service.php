@@ -1,33 +1,29 @@
 <?php
 
-namespace App\Services\SERV_Upper_singular;
+namespace App\Services\MODEL_Upper_singular;
 
-use App\Repositories\SERV_Upper_singular\SERV_Upper_singularInterface;
+use App\Repositories\MODEL_Upper_singular\REPO_Upper_singularInterface;
 
-SERV_lower_singular SERV_Upper_singularService
+class SERVICE_Upper_singularService
 {
     /**
-     * @var SERV_Upper_singularFieldInterface
+     * @var REPO_Upper_singularInterface
      */
-    protected SERV_Upper_singularInterface $SERV_lower_singularFieldInterface;
+    protected REPO_Upper_singularInterface $REPO_lower_singularInterface;
 
     /**
-     * @param SERV_Upper_singularInterface $SERV_lower_singularInterface
+     * @param REPO_Upper_singularInterface $REPO_lower_singularInterface
      */
-    public function __construct(SERV_Upper_singularInterface $SERV_lower_singularInterface)
+    public function __construct(REPO_Upper_singularInterface $REPO_lower_singularInterface)
     {
-        $this->SERV_lower_singularInterface = $SERV_lower_singularInterface;
+        $this->REPO_lower_singularInterface = $REPO_lower_singularInterface;
     }
 
     /**
-     * SERV_Upper_singular placeholder function.
-     *
-     * @param placeholder $SERV_lower_singularPlaceholder
-     *
-     * @return Placeholder
+     * PLACEHOLDER
      */
-    public function SERV_lower_singularPlaceholder(Placeholder $SERV_lower_singularPlaceholder): Placeholder
+    public function FUNC_lower_singular(): PLACEHOLDER
     {
-        return $this->SERV_lower_singularInterface->SERV_lower_singularFunction();
+        return $this->REPO_lower_singularInterface->FUNC_lower_singular();
     }
 }
