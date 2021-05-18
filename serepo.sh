@@ -18,6 +18,9 @@ while true; do
                 read -e -p "Singular:" SERV_SINGULAR
                 SERV_lower_singular=$(perl -ne 'print lc' <<<"$SERV_SINGULAR")
                 SERV_Upper_singular=$(perl -ne 'print ucfirst' <<<"$SERV_lower_singular")
+                read -e -p "Plural  :" SERV_PLURAL
+                SERV_lower_plural=$(perl -ne 'print lc' <<<"$SERV_PLURAL")
+                SERV_Upper_plural=$(perl -ne 'print ucfirst' <<<"$SERV_lower_plural")
                 break;;
         [Nn]* ) break;;
         * ) echo "Please answer yes or no [y/n].";;
@@ -33,6 +36,9 @@ while true; do
                 read -e -p "Singular:" REPO_SINGULAR
                 REPO_lower_singular=$(perl -ne 'print lc' <<<"$REPO_SINGULAR")
                 REPO_Upper_singular=$(perl -ne 'print ucfirst' <<<"$REPO_lower_singular")
+                read -e -p "Plural  :" REPO_PLURAL
+                REPO_lower_plural=$(perl -ne 'print lc' <<<"$REPO_PLURAL")
+                REPO_Upper_plural=$(perl -ne 'print ucfirst' <<<"$REPO_lower_plural")
                 break;;
         [Nn]* ) break;;
         * ) echo "Please answer yes or no [y/n].";;
