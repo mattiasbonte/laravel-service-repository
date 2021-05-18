@@ -2,7 +2,6 @@
 
 namespace App\Services\SERV_Upper_singular;
 
-use Illuminate\Support\Collection;
 use App\Repositories\SERV_Upper_singular\SERV_Upper_singularInterface;
 
 SERV_lower_singular SERV_Upper_singularService
@@ -21,14 +20,13 @@ SERV_lower_singular SERV_Upper_singularService
     }
 
     /**
-     * Get SERV_lower_singular fields
+     * SERV_Upper_singular placeholder function.
      *
-     * @param string $projectDatabaseName
-     * @param string $SERV_lower_singularName
+     * @param placeholder $SERV_lower_singularPlaceholder
      *
-     * @return Collection
+     * @return Placeholder
      */
-    public function getSERV_Upper_singularFields(string $projectDatabaseName, string $SERV_lower_singularName): Collection
+    public function SERV_lower_singularPlaceholder(Placeholder $SERV_lower_singularPlaceholder): Placeholder
     {
         return $this->SERV_lower_singularInterface->SERV_lower_singularFunction();
     }
