@@ -24,8 +24,28 @@ MODEL_Upper_singular=$(perl -ne 'print ucfirst' <<<"$MODEL_SINGULAR")
 # Make if not exist
 echo "================================================================"
 if [ "$($EXEC test -f ${WORK_DIR}/app/Models/${MODEL_Upper_singular}.php && echo 1 || echo 0)" == "0" ]; then
-    $EXEC php artisan make:model ${MODEL_Upper_singular} -c
-    $EXEC php artisan make:resource ${MODEL_Upper_singular}
+    $EXEC php artisan make:model ${MODEL_Upper_singular}
+
+    while true; do
+    read -p "Add an API CONTROLLER as well? [y/n]:" yn
+        case $yn in
+            [Yy]* ) $EXEC php artisan make:controller ${MODEL_Upper_singular}Controller --api --model=${MODEL_Upper_singular}
+                    $EXEC perl -0777pi -e "s+\<\?php\s*+\<\?php\n\nuse App\\\Http\\\Controllers\\\\${MODEL_Upper_singular}Controller;\n+gm" ${WORK_DIR}/routes/api.php
+                    $EXEC sed -i "s+//ROUTE_PLACEHOLDER+Route::apiResource('PLACEHOLDER', ${MODEL_Upper_singular}Controller::class);\n        //ROUTE_PLACEHOLDER+" ${WORK_DIR}/routes/api.php
+                    break;;
+            [Nn]* ) break;;
+            * ) echo "Please answer yes or no [y/n].";;
+        esac
+    done
+    while true; do
+    read -p "Add a RESOURCE as well? [y/n]:" yn
+        case $yn in
+            [Yy]* ) $EXEC php artisan make:resource ${MODEL_Upper_singular}Resource
+                    break;;
+            [Nn]* ) break;;
+            * ) echo "Please answer yes or no [y/n].";;
+        esac
+    done
 else
     echo "Model ${MODEL_Upper_singular}.php already exists, skipping..."
 fi
