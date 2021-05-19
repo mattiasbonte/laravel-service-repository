@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 #############
 # VARIABLES #
 #############
@@ -10,60 +9,19 @@ EXEC="docker exec -it $CONTAINER" # Docker (leave empty without docker)
 WORK_DIR="/app"
 
 
-#########
-# MODEL #
-#########
 
-# Name Input
+##############
+# USER INPUT #
+##############
+
+# Model Input
 echo "================================================================"
 echo "Input MODEL name:"
 read -e -p "=> " MODEL_SINGULAR
 MODEL_lower_singular=$(perl -ne 'print lcfirst' <<<"$MODEL_SINGULAR")
 MODEL_Upper_singular=$(perl -ne 'print ucfirst' <<<"$MODEL_SINGULAR")
 
-# Make if not exist
-echo "================================================================"
-if [ "$($EXEC test -f ${WORK_DIR}/app/Models/${MODEL_Upper_singular}.php && echo 1 || echo 0)" == "0" ]; then
-    $EXEC php artisan make:model ${MODEL_Upper_singular}
-
-    while true; do
-    read -p "Add an API CONTROLLER as well? [y/n]:" yn
-        case $yn in
-            [Yy]* ) $EXEC php artisan make:controller ${MODEL_Upper_singular}Controller --api --model=${MODEL_Upper_singular}
-                    $EXEC perl -0777pi -e "s+\<\?php\s*+\<\?php\n\nuse App\\\Http\\\Controllers\\\\${MODEL_Upper_singular}Controller;\n+gm" ${WORK_DIR}/routes/api.php
-                    $EXEC sed -i "s+//ROUTE_PLACEHOLDER+Route::apiResource('PLACEHOLDER', ${MODEL_Upper_singular}Controller::class);\n        //ROUTE_PLACEHOLDER+" ${WORK_DIR}/routes/api.php
-                    break;;
-            [Nn]* ) break;;
-            * ) echo "Please answer yes or no [y/n].";;
-        esac
-    done
-    while true; do
-    read -p "Add a RESOURCE as well? [y/n]:" yn
-        case $yn in
-            [Yy]* ) $EXEC php artisan make:resource ${MODEL_Upper_singular}Resource
-                    break;;
-            [Nn]* ) break;;
-            * ) echo "Please answer yes or no [y/n].";;
-        esac
-    done
-else
-    echo "Model ${MODEL_Upper_singular}.php already exists, skipping..."
-fi
-
-# Function Name Input
-echo "================================================================"
-echo "Input placeholder FUNCTION name:"
-read -e -p "=> " FUNC_SINGULAR
-FUNC_lower_singular=$(perl -ne 'print lcfirst' <<<"$FUNC_SINGULAR")
-FUNC_Upper_singular=$(perl -ne 'print ucfirst' <<<"$FUNC_SINGULAR")
-
-
-
-###########
-# SERVICE #
-###########
-
-# Prompt
+# Service Prompt
 echo "================================================================"
 while true; do
     read -p "Make a service? [y/n]:" yn
@@ -77,6 +35,77 @@ while true; do
         * ) echo "Please answer yes or no [y/n].";;
     esac
 done
+
+# Repository Prompt
+echo "================================================================"
+while true; do
+    read -p "Make a repository? [y/n]:" yn
+    case $yn in
+        [Yy]* ) echo "Input REPOSITORY name:"
+                read -e -p "=> " REPO_SINGULAR
+                REPO_lower_singular=$(perl -ne 'print lcfirst' <<<"$REPO_SINGULAR")
+                REPO_Upper_singular=$(perl -ne 'print ucfirst' <<<"$REPO_SINGULAR")
+                break;;
+        [Nn]* ) break;;
+        * ) echo "Please answer yes or no [y/n].";;
+    esac
+done
+
+# Function Input
+echo "================================================================"
+echo "Input placeholder FUNCTION name:"
+read -e -p "=> " FUNC_SINGULAR
+FUNC_lower_singular=$(perl -ne 'print lcfirst' <<<"$FUNC_SINGULAR")
+FUNC_Upper_singular=$(perl -ne 'print ucfirst' <<<"$FUNC_SINGULAR")
+
+
+
+#########
+# MODEL #
+#########
+
+# Make if not exist
+echo "================================================================"
+if [ "$($EXEC test -f ${WORK_DIR}/app/Models/${MODEL_Upper_singular}.php && echo 1 || echo 0)" == "0" ]; then
+    $EXEC php artisan make:model ${MODEL_Upper_singular}
+
+    while true; do
+    read -p "Add an API CONTROLLER? [y/n]:" yn
+        case $yn in
+            [Yy]* ) $EXEC php artisan make:controller ${MODEL_Upper_singular}Controller --api --model=${MODEL_Upper_singular}
+                    $EXEC perl -0777pi -e "s+\<\?php\s*+\<\?php\n\nuse App\\\Http\\\Controllers\\\\${MODEL_Upper_singular}Controller;\n+gm" ${WORK_DIR}/routes/api.php
+                    $EXEC sed -i "s+//ROUTE_PLACEHOLDER+Route::apiResource('PLACEHOLDER', ${MODEL_Upper_singular}Controller::class);\n        //ROUTE_PLACEHOLDER+" ${WORK_DIR}/routes/api.php
+                    break;;
+            [Nn]* ) break;;
+            * ) echo "Please answer yes or no [y/n].";;
+        esac
+    done
+    while true; do
+    read -p "Add a REQUEST? [y/n]:" yn
+        case $yn in
+            [Yy]* ) $EXEC php artisan make:request ${MODEL_Upper_singular}Request
+                    break;;
+            [Nn]* ) break;;
+            * ) echo "Please answer yes or no [y/n].";;
+        esac
+    done
+    while true; do
+    read -p "Add a RESOURCE? [y/n]:" yn
+        case $yn in
+            [Yy]* ) $EXEC php artisan make:resource ${MODEL_Upper_singular}Resource
+                    break;;
+            [Nn]* ) break;;
+            * ) echo "Please answer yes or no [y/n].";;
+        esac
+    done
+else
+    echo "Model ${MODEL_Upper_singular}.php already exists, skipping..."
+fi
+
+
+###########
+# SERVICE #
+###########
 
 # Make if not exist
 if [ $SERVICE_SINGULAR ] ; then
@@ -101,21 +130,6 @@ fi
 ##########################
 # REPOSITORY & INTERFACE #
 ##########################
-
-# Prompt
-echo "================================================================"
-while true; do
-    read -p "Make a repository? [y/n]:" yn
-    case $yn in
-        [Yy]* ) echo "Input REPOSITORY name:"
-                read -e -p "=> " REPO_SINGULAR
-                REPO_lower_singular=$(perl -ne 'print lcfirst' <<<"$REPO_SINGULAR")
-                REPO_Upper_singular=$(perl -ne 'print ucfirst' <<<"$REPO_SINGULAR")
-                break;;
-        [Nn]* ) break;;
-        * ) echo "Please answer yes or no [y/n].";;
-    esac
-done
 
 # Make if not exist
 if [ $REPO_SINGULAR ] ; then
@@ -154,6 +168,10 @@ if [ $REPO_SINGULAR ] ; then
 fi
 
 
+
+###########
+# MESSAGE #
+###########
 
 echo "================================================================"
 echo "File generation complete :)"

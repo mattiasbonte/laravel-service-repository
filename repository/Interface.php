@@ -3,7 +3,7 @@
 namespace App\Repositories\MODEL_Upper_singular;
 
 
-interface REPO_Upper_singularFieldInterface
+interface REPO_Upper_singularInterface
 {
     /**
      * PLACEHOLDER
