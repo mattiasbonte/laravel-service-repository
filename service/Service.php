@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\MODEL_Upper_singular;
+namespace App\Services;
 
 use App\Repositories\MODEL_Upper_singular\REPO_Upper_singularInterface;
 

@@ -60,49 +60,6 @@ FUNC_Upper_singular=$(perl -ne 'print ucfirst' <<<"$FUNC_SINGULAR")
 
 
 
-#########
-# MODEL #
-#########
-
-# Make if not exist
-echo "================================================================"
-if [ "$($EXEC test -f ${WORK_DIR}/app/Models/${MODEL_Upper_singular}.php && echo 1 || echo 0)" == "0" ]; then
-    $EXEC php artisan make:model ${MODEL_Upper_singular}
-
-    while true; do
-    read -p "Add an API CONTROLLER? [y/n]:" yn
-        case $yn in
-            [Yy]* ) $EXEC php artisan make:controller ${MODEL_Upper_singular}Controller --api --model=${MODEL_Upper_singular}
-                    $EXEC perl -0777pi -e "s+\<\?php\s*+\<\?php\n\nuse App\\\Http\\\Controllers\\\\${MODEL_Upper_singular}Controller;\n+gm" ${WORK_DIR}/routes/api.php
-                    $EXEC sed -i "s+//ROUTE_PLACEHOLDER+Route::apiResource('PLACEHOLDER', ${MODEL_Upper_singular}Controller::class);\n        //ROUTE_PLACEHOLDER+" ${WORK_DIR}/routes/api.php
-                    break;;
-            [Nn]* ) break;;
-            * ) echo "Please answer yes or no [y/n].";;
-        esac
-    done
-    while true; do
-    read -p "Add a REQUEST? [y/n]:" yn
-        case $yn in
-            [Yy]* ) $EXEC php artisan make:request ${MODEL_Upper_singular}Request
-                    break;;
-            [Nn]* ) break;;
-            * ) echo "Please answer yes or no [y/n].";;
-        esac
-    done
-    while true; do
-    read -p "Add a RESOURCE? [y/n]:" yn
-        case $yn in
-            [Yy]* ) $EXEC php artisan make:resource ${MODEL_Upper_singular}Resource
-                    break;;
-            [Nn]* ) break;;
-            * ) echo "Please answer yes or no [y/n].";;
-        esac
-    done
-else
-    echo "Model ${MODEL_Upper_singular}.php already exists, skipping..."
-fi
-
-
 ###########
 # SERVICE #
 ###########
@@ -112,13 +69,13 @@ if [ $SERVICE_SINGULAR ] ; then
 echo "================================================================"
     $EXEC mkdir -p "${WORK_DIR}/app/Services/${MODEL_Upper_singular}"
     if [ "$($EXEC test -f ${WORK_DIR}/app/Services/${MODEL_Upper_singular}/${SERVICE_Upper_singular}Service.php && echo 1 || echo 0)" == "0" ]; then
-        $EXEC touch "${WORK_DIR}/app/Services/${MODEL_Upper_singular}/${SERVICE_Upper_singular}Service.php" || exit
-        docker cp service/Service.php $CONTAINER:${WORK_DIR}/app/Services/${MODEL_Upper_singular}/${SERVICE_Upper_singular}Service.php
-        $EXEC sed -i "s+MODEL_Upper_singular+${MODEL_Upper_singular}+g" ${WORK_DIR}/app/Services/${MODEL_Upper_singular}/${SERVICE_Upper_singular}Service.php
-        $EXEC sed -i "s+SERVICE_Upper_singular+${SERVICE_Upper_singular}+g" ${WORK_DIR}/app/Services/${MODEL_Upper_singular}/${SERVICE_Upper_singular}Service.php
-        $EXEC sed -i "s+REPO_Upper_singular+${REPO_Upper_singular}+g" ${WORK_DIR}/app/Services/${MODEL_Upper_singular}/${SERVICE_Upper_singular}Service.php
-        $EXEC sed -i "s+REPO_lower_singular+${REPO_lower_singular}+g" ${WORK_DIR}/app/Services/${MODEL_Upper_singular}/${SERVICE_Upper_singular}Service.php
-        $EXEC sed -i "s+FUNC_lower_singular+${FUNC_lower_singular}+g" ${WORK_DIR}/app/Services/${MODEL_Upper_singular}/${SERVICE_Upper_singular}Service.php
+        $EXEC touch "${WORK_DIR}/app/Services/${SERVICE_Upper_singular}Service.php" || exit
+        docker cp service/Service.php $CONTAINER:${WORK_DIR}/app/Services/${SERVICE_Upper_singular}Service.php
+        $EXEC sed -i "s+MODEL_Upper_singular+${MODEL_Upper_singular}+g" ${WORK_DIR}/app/Services/${SERVICE_Upper_singular}Service.php
+        $EXEC sed -i "s+SERVICE_Upper_singular+${SERVICE_Upper_singular}+g" ${WORK_DIR}/app/Services/${SERVICE_Upper_singular}Service.php
+        $EXEC sed -i "s+REPO_Upper_singular+${REPO_Upper_singular}+g" ${WORK_DIR}/app/Services/${SERVICE_Upper_singular}Service.php
+        $EXEC sed -i "s+REPO_lower_singular+${REPO_lower_singular}+g" ${WORK_DIR}/app/Services/${SERVICE_Upper_singular}Service.php
+        $EXEC sed -i "s+FUNC_lower_singular+${FUNC_lower_singular}+g" ${WORK_DIR}/app/Services/${SERVICE_Upper_singular}Service.php
         echo "${SERVICE_Upper_singular}Service Created..."
     else
         echo "${SERVICE_Upper_singular}Service.php already exists, skipping..."
@@ -165,6 +122,50 @@ if [ $REPO_SINGULAR ] ; then
     else
         echo "${REPO_Upper_singular}Interface.php already exists, skipping..."
     fi
+fi
+
+
+
+###########
+# ARTISAN #
+###########
+
+# Make if not exist
+echo "================================================================"
+if [ "$($EXEC test -f ${WORK_DIR}/app/Models/${MODEL_Upper_singular}.php && echo 1 || echo 0)" == "0" ]; then
+    $EXEC php artisan make:model ${MODEL_Upper_singular}
+
+    while true; do
+    read -p "Add an API CONTROLLER? [y/n]:" yn
+        case $yn in
+            [Yy]* ) $EXEC php artisan make:controller ${MODEL_Upper_singular}Controller --api --model=${MODEL_Upper_singular}
+                    $EXEC perl -0777pi -e "s+\<\?php\s*+\<\?php\n\nuse App\\\Http\\\Controllers\\\\${MODEL_Upper_singular}Controller;\n+gm" ${WORK_DIR}/routes/api.php
+                    $EXEC sed -i "s+//ROUTE_PLACEHOLDER+Route::apiResource('PLACEHOLDER', ${MODEL_Upper_singular}Controller::class);\n        //ROUTE_PLACEHOLDER+" ${WORK_DIR}/routes/api.php
+                    break;;
+            [Nn]* ) break;;
+            * ) echo "Please answer yes or no [y/n].";;
+        esac
+    done
+    while true; do
+    read -p "Add a REQUEST? [y/n]:" yn
+        case $yn in
+            [Yy]* ) $EXEC php artisan make:request ${MODEL_Upper_singular}Request
+                    break;;
+            [Nn]* ) break;;
+            * ) echo "Please answer yes or no [y/n].";;
+        esac
+    done
+    while true; do
+    read -p "Add a RESOURCE? [y/n]:" yn
+        case $yn in
+            [Yy]* ) $EXEC php artisan make:resource ${MODEL_Upper_singular}Resource
+                    break;;
+            [Nn]* ) break;;
+            * ) echo "Please answer yes or no [y/n].";;
+        esac
+    done
+else
+    echo "Model ${MODEL_Upper_singular}.php already exists, skipping..."
 fi
 
 
