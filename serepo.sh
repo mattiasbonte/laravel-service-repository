@@ -133,7 +133,16 @@ fi
 # Make if not exist
 echo "================================================================"
 if [ "$($EXEC test -f ${WORK_DIR}/app/Models/${MODEL_Upper_singular}.php && echo 1 || echo 0)" == "0" ]; then
-    $EXEC php artisan make:model ${MODEL_Upper_singular}
+
+    while true; do
+    read -p "Add a MODEL? [y/n]:" yn
+        case $yn in
+            [Yy]* ) $EXEC php artisan make:model ${MODEL_Upper_singular}
+                    break;;
+            [Nn]* ) break;;
+            * ) echo "Please answer yes or no [y/n].";;
+        esac
+    done
 
     while true; do
     read -p "Add an API CONTROLLER? [y/n]:" yn
@@ -146,6 +155,7 @@ if [ "$($EXEC test -f ${WORK_DIR}/app/Models/${MODEL_Upper_singular}.php && echo
             * ) echo "Please answer yes or no [y/n].";;
         esac
     done
+
     while true; do
     read -p "Add a REQUEST? [y/n]:" yn
         case $yn in
@@ -155,6 +165,7 @@ if [ "$($EXEC test -f ${WORK_DIR}/app/Models/${MODEL_Upper_singular}.php && echo
             * ) echo "Please answer yes or no [y/n].";;
         esac
     done
+
     while true; do
     read -p "Add a RESOURCE? [y/n]:" yn
         case $yn in
